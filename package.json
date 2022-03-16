@@ -1,0 +1,10 @@
+{
+  "name": "@upala/unique-human",
+  "version": "1.0.0",
+  "description": "\"Upala identity management tools\"",
+  "main": "index.js",
+  "repository": "https://github.com/upala-digital-identity/unique-human-lib.git",
+  "author": "Petr Porobov <porobov.p@gmail.com>",
+  "license": "MIT",
+  "private": false
+}

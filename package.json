@@ -6,5 +6,8 @@
   "repository": "https://github.com/upala-digital-identity/unique-human-lib.git",
   "author": "Petr Porobov <porobov.p@gmail.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "ethers": "^5.6.2"
+  }
 }

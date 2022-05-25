@@ -26,13 +26,13 @@ async function newIdentity(newIdentityOwner, wallet, upalaConstants) {
     return upalaID
 }
 
-// explosionCheque - pool address and pool-specific attack payload
-async function explode(wallet, explosionCheque, upalaConstants) {
+// liquidationCheque - pool address and pool-specific attack payload
+async function liquidate(wallet, liquidationCheque, upalaConstants) {
     // get pool factory by poolAddress
-    // load abi and explosion instructions
+    // load abi and liquidation instructions
     // check data
-    // explode
-    let { poolAddress, scoreAssignedTo, score, bundleId, proof } = explosionCheque
+    // liquidate
+    let { poolAddress, scoreAssignedTo, score, bundleId, proof } = liquidationCheque
     let upConsts = loadUpalaconstants(await wallet.getChainId(), upalaConstants)
     // check if id already exists for the address and create one if doesn't
     const upala = upConsts.getContract('Upala', wallet)
@@ -57,4 +57,4 @@ async function getDaiBalance(wallet, upalaConstants) {
     return dai.connect(wallet).balanceOf(wallet.address)
 }
 
-module.exports = { newIdentity, explode, getDaiBalance }
+module.exports = { newIdentity, liquidate, getDaiBalance }

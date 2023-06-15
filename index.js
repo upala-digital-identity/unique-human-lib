@@ -2,7 +2,7 @@ const { UpalaConstants, numConfirmations } = require('@upala/constants')
 const { ethers } = require('ethers')
 // newIdentityOwner - address of the new id owner
 // wallet - ethersjs wallet object
-// upalaConstants - upala constants object 
+// upalaConstants - upala constants object (an override for tests)
 
 function loadUpalaconstants(chainId, upalaConstants) {
     if (upalaConstants) {
@@ -13,6 +13,7 @@ function loadUpalaconstants(chainId, upalaConstants) {
         return new UpalaConstants(chainId)
     }
 }
+
 async function newIdentity(newIdentityOwner, wallet, upalaConstants) {
     let upConsts = loadUpalaconstants(await wallet.getChainId(), upalaConstants)
     const upala = upConsts.getContract('Upala', wallet)
@@ -51,10 +52,30 @@ async function liquidate(wallet, liquidationCheque, upalaConstants) {
         proof)
 }
 
+// TODO add function eth balance
+// providerOrSigner - meaning we don't need to sign any txs. We are just reading the contract
+// upalaConstants is optional. If omitted will retrieve constants from signer's chainID
+async function isLiquidated(providerOrSigner, upalaID, upalaConstants) {
+    let upConsts = loadUpalaconstants(await providerOrSigner.getChainId(), upalaConstants)
+    const upala = upConsts.getContract('Upala', providerOrSigner)
+    return await upala.connect(providerOrSigner).isLiquidated(upalaID) // try owner()
+}
+
+async function getUpalaID(wallet, upalaConstants) {
+    let upConsts = loadUpalaconstants(await wallet.getChainId(), upalaConstants)
+    const upala = upConsts.getContract('Upala', wallet)
+    return await upala.connect(wallet).myId()
+}
+
 async function getDaiBalance(wallet, upalaConstants) {
     let upConsts = loadUpalaconstants(await wallet.getChainId(), upalaConstants)
     const dai = upConsts.getContract('DAI', wallet)
     return dai.connect(wallet).balanceOf(wallet.address)
 }
 
-module.exports = { newIdentity, liquidate, getDaiBalance }
+module.exports = { 
+    newIdentity,
+    liquidate,
+    getDaiBalance,
+    isLiquidated,
+    getUpalaID }
